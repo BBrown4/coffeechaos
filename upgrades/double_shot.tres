@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="Upgrade" load_steps=2 format=3 uid="uid://qy1qhcrradxb"]
+
+[ext_resource type="Script" uid="uid://ci6n25s8vy2wp" path="res://upgrades/upgrade.gd" id="1_ppmeb"]
+
+[resource]
+script = ExtResource("1_ppmeb")
+upgrade_name = "Double Shot"
+upgrade_description = "Fires [color=green]2[/color] shots at a slight angle"
+effect_type = 1
+target_stat = ""
+value = 0.0
+flag_name = "has_doubleshot"
+increments_flag = false
+flag_value_name = ""
+flag_value = 0.0
+metadata/_custom_type_script = "uid://ci6n25s8vy2wp"

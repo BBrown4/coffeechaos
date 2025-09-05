@@ -3,7 +3,6 @@ extends Node2D
 @export var customer_scene: PackedScene
 @export var base_spawn_interval: float = 1.5
 @export var base_customers_per_wave: int = 5
-@export var health: int = 3
 
 var score: int = 0
 var wave: int = 1
@@ -16,6 +15,7 @@ func _ready() -> void:
 	add_to_group("game")
 	$SpawnTimer.timeout.connect(_spawn_customer)
 	start_wave()
+	_update_ui()
 
 func start_wave() -> void:
 	spawning = true
@@ -30,9 +30,7 @@ func start_wave() -> void:
 	$SpawnTimer.wait_time = spawn_interval
 	$SpawnTimer.start()
 	
-	%HealthLabel.text = "Health: %d" % health
-	%ScoreLabel.text = "Score: %d" % score
-	%WaveLabel.text = "Wave %d" % wave
+	_update_ui()
 
 func _spawn_customer() -> void:
 	if customers_remaining_to_spawn <= 0:
@@ -73,34 +71,33 @@ func _show_upgrades():
 	%GameOverLabel.visible = false
 	%RestartButton.visible = false
 	
-	var upgrade_pool: Array[Upgrades.UpgradeType] = [
-		Upgrades.UpgradeType.FASTER_SHOOT,
-		Upgrades.UpgradeType.EXTRA_HEALTH,
-		Upgrades.UpgradeType.SPREAD_SHOT,
-		Upgrades.UpgradeType.DOUBLE_SHOT,
-		Upgrades.UpgradeType.DOUBLE_SCORE,
-		Upgrades.UpgradeType.BOUNCING_SHOTS
-	]
+	for c in %UpgradeContainer.get_children():
+		c.queue_free()
 	
-	upgrade_pool.shuffle()
-	var choices = upgrade_pool.slice(0, 3)
-	
-	for i in range(3):
-		var btn: Button = %UpgradePanel.get_node("VBoxContainer/UpgradeButton%d" % (i+1))
-		btn.text = Upgrades.get_upgrade_name(choices[i])
-		btn.set_meta("upgrade_choice", choices[i])
-		
-		if btn.pressed.is_connected(_on_upgrade_button_pressed):
-			btn.pressed.disconnect(_on_upgrade_button_pressed)
+	var choices: Array[Upgrade] = UpgradeManager.get_random_choices()
+	for i in range(choices.size()):
+		var upgrade = choices[i]
+		var btn: Button = Button.new()
+		btn.set_meta("upgrade_choice", upgrade)
+		btn.text = upgrade.upgrade_name
 		btn.pressed.connect(_on_upgrade_button_pressed.bind(btn))
+		btn.mouse_entered.connect(_on_upgrade_button_mouse_entered.bind(btn))
+		btn.mouse_exited.connect(func(): %UpgradeTTPanel.hide())
+		%UpgradeContainer.add_child(btn)
 
 func _on_upgrade_button_pressed(button: Button):
 	var choice = button.get_meta("upgrade_choice")
-	Upgrades.apply_upgrade(self, choice)
-	%UpgradePanel.visible= false
+	UpgradeManager.apply_upgrade(choice, %Player)
+	%UpgradePanel.hide()
 	wave += 1
 	await get_tree().create_timer(1.5).timeout
 	start_wave()
+
+func _on_upgrade_button_mouse_entered(button: Button) -> void:
+	var upgrade: Upgrade = button.get_meta("upgrade_choice")
+	%UpgradeTTName.text = upgrade.upgrade_name
+	%UpgradeTTDescription.text = upgrade.upgrade_description
+	%UpgradeTTPanel.show()
 
 func add_score(points: int) -> void:
 	if double_score:
@@ -109,9 +106,12 @@ func add_score(points: int) -> void:
 	_update_ui()
 
 func take_damage(amount: int) -> void:
-	health -= amount
+	if DevUtilities.god_mode:
+		return
+		
+	%Player.current_health -= amount
 	_update_ui()
-	if health <= 0:
+	if %Player.current_health <= 0:
 		game_over()
 
 func game_over() -> void:
@@ -121,7 +121,7 @@ func game_over() -> void:
 	Engine.time_scale = 0.0
 
 func _update_ui() -> void:
-	%HealthLabel.text = "Health: %d" % health
+	%HealthLabel.text = "Health: %d/%d" % [%Player.current_health, %Player.max_health]
 	$%ScoreLabel.text = "Score: %d" % score
 	%WaveLabel.text = "Wave %d" % wave
 

@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="Upgrade" load_steps=2 format=3 uid="uid://grs0rpeh4ppt"]
+
+[ext_resource type="Script" uid="uid://ci6n25s8vy2wp" path="res://upgrades/upgrade.gd" id="1_cikrh"]
+
+[resource]
+script = ExtResource("1_cikrh")
+upgrade_name = "Piercing Shot"
+upgrade_description = "Coffee pierces [color=green]+1[/color] additional customer before being destroyed"
+effect_type = 1
+target_stat = ""
+value = 0.0
+flag_name = "has_pierce"
+increments_flag = true
+flag_value_name = ""
+flag_value = 1.0
+metadata/_custom_type_script = "uid://ci6n25s8vy2wp"

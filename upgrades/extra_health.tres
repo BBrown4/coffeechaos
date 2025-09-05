@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="Upgrade" load_steps=2 format=3 uid="uid://c1uj4cxflpopm"]
+
+[ext_resource type="Script" uid="uid://ci6n25s8vy2wp" path="res://upgrades/upgrade.gd" id="1_j4nat"]
+
+[resource]
+script = ExtResource("1_j4nat")
+upgrade_name = "Extra Health"
+upgrade_description = "[color=green]+1[/color] Max Health"
+effect_type = 0
+target_stat = "max_health"
+value = 1.0
+flag_name = ""
+increments_flag = false
+flag_value_name = ""
+flag_value = 0.0
+metadata/_custom_type_script = "uid://ci6n25s8vy2wp"

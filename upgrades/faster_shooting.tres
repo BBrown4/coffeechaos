@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="Upgrade" load_steps=2 format=3 uid="uid://hnuygspk2jcj"]
+
+[ext_resource type="Script" uid="uid://ci6n25s8vy2wp" path="res://upgrades/upgrade.gd" id="1_l1r48"]
+
+[resource]
+script = ExtResource("1_l1r48")
+upgrade_name = "Faster Shooting"
+upgrade_description = "[color=green]-0.1s[/color] Shot Cooldown"
+effect_type = 0
+target_stat = "fire_rate"
+value = -0.1
+flag_name = ""
+increments_flag = false
+flag_value_name = ""
+flag_value = 0.0
+metadata/_custom_type_script = "uid://ci6n25s8vy2wp"

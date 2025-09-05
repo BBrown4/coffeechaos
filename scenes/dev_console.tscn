@@ -1,0 +1,37 @@
+[gd_scene load_steps=2 format=3 uid="uid://cc5n78x7v4jyo"]
+
+[ext_resource type="Script" uid="uid://d4jvrmtq4lwnx" path="res://scenes/dev_console.gd" id="1_gtvys"]
+
+[node name="DevConsole" type="CanvasLayer"]
+layer = 99
+visible = false
+script = ExtResource("1_gtvys")
+
+[node name="Panel" type="Panel" parent="."]
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 200.0
+grow_horizontal = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = -32.0
+grow_horizontal = 2
+grow_vertical = 2
+vertical_alignment = 2
+
+[node name="LineEdit" type="LineEdit" parent="Panel"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -31.0
+grow_horizontal = 2
+grow_vertical = 0
+keep_editing_on_text_submit = true
+
+[connection signal="text_submitted" from="Panel/LineEdit" to="." method="_on_line_edit_text_submitted"]

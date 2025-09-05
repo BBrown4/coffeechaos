@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="Upgrade" load_steps=2 format=3 uid="uid://djntasqy7i2fi"]
+
+[ext_resource type="Script" uid="uid://ci6n25s8vy2wp" path="res://upgrades/upgrade.gd" id="1_w0sr4"]
+
+[resource]
+script = ExtResource("1_w0sr4")
+upgrade_name = "Spread Shot"
+upgrade_description = "Fires [color=green]3[/color] shots in a slight arc"
+effect_type = 1
+target_stat = ""
+value = 0.0
+flag_name = "has_spread"
+metadata/_custom_type_script = "uid://ci6n25s8vy2wp"

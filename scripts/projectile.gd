@@ -4,7 +4,9 @@ extends Area2D
 @export var despawn_margin: float = 48.0
 
 var can_bounce: bool = false
+var can_pierce: bool = false
 var bounced: bool = false
+var pierce_count: int = 0
 
 func enable_bounce() -> void:
 	can_bounce = true
@@ -26,4 +28,8 @@ func _physics_process(delta: float) -> void:
 func _on_body_entered(body: Node2D) -> void:
 	if body.has_method("take_damage"):
 		body.take_damage(1)
-		queue_free()
+		if can_pierce and pierce_count > 0:
+			pierce_count -= 1
+			return
+		else:
+			queue_free()
